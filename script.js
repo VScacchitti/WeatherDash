@@ -40,6 +40,7 @@ $(document).ready(function () {
       "&units=imperial" +
       "&appid=1e824d4a7dcd9d6f7f2ba26eeb8ab2f6";
     console.log("singleDay", singleDay);
+
     //Single Day AJAX Call
     $.ajax({
       url: singleDay,
@@ -50,6 +51,8 @@ $(document).ready(function () {
         "http://openweathermap.org/img/w/" + response.weather[0].icon + ".png";
       var lat = response.coord.lat;
       var lon = response.coord.lon;
+      var temp = Math.floor(response.main.temp);
+      var windSpeed = Math.floor(response.wind.speed);
 
       $("#dailyweather").append(
         "<div class='col s12 m6'>" +
@@ -65,7 +68,7 @@ $(document).ready(function () {
           "</h2>" +
           "<ul class='daily'>" +
           "Temperature: " +
-          response.main.temp +
+          temp +
           " °F" +
           "</ul>" +
           "<ul class='daily'>" +
@@ -75,7 +78,7 @@ $(document).ready(function () {
           "</ul>" +
           "<ul class='daily'>" +
           "Wind Speed: " +
-          response.wind.speed +
+          windSpeed +
           " MPH" +
           "</ul>" +
           "</div>"
@@ -97,7 +100,13 @@ $(document).ready(function () {
         method: "GET",
       }).then(function (response) {
         console.log(response);
-        //icon URLS
+        var extTemp1 = Math.floor(response.daily[0].temp.day);
+        var extTemp2 = Math.floor(response.daily[1].temp.day);
+        var extTemp3 = Math.floor(response.daily[2].temp.day);
+        var extTemp4 = Math.floor(response.daily[3].temp.day);
+        var extTemp5 = Math.floor(response.daily[4].temp.day);
+
+        //Weather icon URLS
         var iconURL1 =
           "http://openweathermap.org/img/w/" +
           response.daily[0].weather[0].icon +
@@ -120,6 +129,8 @@ $(document).ready(function () {
           response.daily[4].weather[0].icon +
           ".png";
 
+        //UV Index AJAX Call and color else/if
+
         var uvIndexURL =
           "http://api.openweathermap.org/data/2.5/uvi?&appid=1e824d4a7dcd9d6f7f2ba26eeb8ab2f6&lat=" +
           lat +
@@ -131,7 +142,7 @@ $(document).ready(function () {
           method: "GET",
         }).then(function (response) {
           console.log(response);
-          var uVIndex = response.value;
+          var uVIndex = Math.floor(response.value);
 
           $("#dailyweather").append(
             "<div class = 'col s12 m6'>" +
@@ -155,17 +166,16 @@ $(document).ready(function () {
           }
         });
 
-        //end of append
+        //Extended Forcast Header
 
-        //if statement for UV Index Colors
-
-        $("fiveday").append(
+        $("#fiveday").append(
           "<div class='col-md-12>" +
             "<h2 id='fiveday'>" +
             "Extended Forcast:" +
             "</h2>"
-        ); //ENd
-        //Extended Forcast
+        );
+
+        //Extended Forcast Days
         $("#day1").append(
           "<div class='fiveDayCard card col s12 m6'>" +
             "<div class= 'card-body'>" +
@@ -179,7 +189,7 @@ $(document).ready(function () {
             "</div>" +
             "<div class= 'card-text'>" +
             "Temp: " +
-            response.daily[0].temp.day +
+            extTemp1 +
             " °F" +
             "</div>" +
             "<div class= 'card-text'>" +
@@ -203,7 +213,7 @@ $(document).ready(function () {
             "</div>" +
             "<div class= 'card-text'>" +
             "Temp: " +
-            response.daily[1].temp.day +
+            extTemp2 +
             " °F" +
             "</div>" +
             "<div class= 'card-text'>" +
@@ -227,7 +237,7 @@ $(document).ready(function () {
             "</div>" +
             "<div class= 'card-text'>" +
             "Temp: " +
-            response.daily[2].temp.day +
+            extTemp3 +
             " °F" +
             "</div>" +
             "<div class= 'card-text'>" +
@@ -251,7 +261,7 @@ $(document).ready(function () {
             "</div>" +
             "<div class= 'card-text'>" +
             "Temp: " +
-            response.daily[3].temp.day +
+            extTemp4 +
             " °F" +
             "</div>" +
             "<div class= 'card-text'>" +
@@ -275,7 +285,7 @@ $(document).ready(function () {
             "</div>" +
             "<div class= 'card-text'>" +
             "Temp: " +
-            response.daily[4].temp.day +
+            extTemp5 +
             " °F" +
             "</div>" +
             "<div class= 'card-text'>" +
@@ -296,6 +306,7 @@ $(document).ready(function () {
     $("#citybuttons").empty();
     var arrFromStor = JSON.parse(localStorage.getItem("searchedCities")) || [];
     var arrLength = arrFromStor.length;
+
     //loop that will prepend all ciites within the array lenfth
 
     for (var i = 0; i < arrLength; i++) {
@@ -308,7 +319,7 @@ $(document).ready(function () {
           "</button>"
       );
     } //end of loop
-  } //end of ShowStored Cities
+  } //end of ShowStoredCities
 
   showStoredCities();
 
