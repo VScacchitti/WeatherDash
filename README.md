@@ -13,7 +13,6 @@ Searches are stored locally, so upon refresh previous searches will be available
 
 This application uses HTML, CSS, JavaScript, JQuery, and OpenWeatherAPI!
 
-Links:
-Rep:
+Repo:https://github.com/VScacchitti/WeatherDashboard
 
-Deployed Site:
+Deployed Site: https://vscacchitti.github.io/WeatherDashboard/
